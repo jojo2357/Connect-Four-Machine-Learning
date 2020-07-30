@@ -1,18 +1,17 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
 public class ConnectFourMain {
-    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RESET = "";//"\u001B[0m";
     public static final String ANSI_BLACK = "";
     //"\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "";//"\u001B[31m";
+    public static final String ANSI_GREEN = "";//"\u001B[32m";
     public static final String ANSI_YELLOW = "";//"\u001B[33m";
     public static final String ANSI_BLUE = "";//"\u001B[34m";
     public static final String ANSI_PURPLE = "";//"\u001B[35m";
-    public static final String ANSI_CYAN = "";
+    public static final String ANSI_CYAN = "";//"";
     //"\u001B[36m";
     public static final String ANSI_WHITE = "";//"\u001B[37m";
     public static void main(String args[]){
@@ -263,12 +262,18 @@ public class ConnectFourMain {
             }
             if (resignation) resigns++;
             if (hundredIndex == 10000) {
+                try{
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                }catch (Exception e){
+                    System.out.println("CLS failed");
+                }
+                System.out.println("Time spent on each function (ms)");
                 System.out.println("Stupid: " + stupidTime);
                 System.out.println("Smart: " + cpuTime);
 				System.out.println("Search: " + searchTime);
 				System.out.println("Skip: " + skipTime);
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                System.out.println("Resignations: " + String.format("%.5f", ((resigns - lastResigns) * 100.0D / ((randomWins + smartWins + draws) + 1))));
+
+                //System.out.println("Resignations: " + String.format("%.5f", ((resigns - lastResigns) * 100.0D / ((randomWins + smartWins + draws) + 1))));
 				/*System.out.println("Total seaches saved: " + skips);
                 System.out.println("New seaches saved: " + (skips - lastSkips));*/
                 lastResigns = resigns;
@@ -296,6 +301,7 @@ public class ConnectFourMain {
                         }
                     }
                     System.out.println("Sort: " + (System.currentTimeMillis() - sortStart));
+                    System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                     System.out.println("Sorted: " + size);
                     System.out.println("New Sorts: " + (size - lastAmt));
                     System.out.println("Solves: " + totalSolved);
@@ -303,7 +309,7 @@ public class ConnectFourMain {
 					System.out.println("Average Moves: " + String.format("%.5f", 2 * ((double)totalMoves / (draws + smartWins + randomWins))));/**/
 					lastSolved = totalSolved;
                     lastAmt = size;
-                }
+                }else System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                 System.out.println("Total Games: " + (randomWins + smartWins + draws));
                 totalMoves = 0;
                 totalPlays = 0;
@@ -335,6 +341,7 @@ public class ConnectFourMain {
                         out = "Draw";
                         break;
                 }*/
+                System.out.println("W%  |chng W%  |rec   t");
 				double hundPct = 0;
 				double lundPct = 0;
                 for (byte bit : lastHundred){
@@ -345,17 +352,18 @@ public class ConnectFourMain {
 				lundPct /= 10000.0D;
 				//System.out.println(tp);
                 if (hundPct > record){
-					System.out.println(ANSI_GREEN + String.format("%.3f", hundPct) + " " + String.format("%.3f", hundPct - lastPct) + ANSI_RESET + " " + (String.format("%.3f", record)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
+					System.out.println(ANSI_GREEN + String.format("%.3f", hundPct) + " " + String.format("%.3f", hundPct - lastPct) + ANSI_RESET + "   " + (String.format("%.3f", record)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
 					record = hundPct;
                 }
                 else 
-                System.out.println(ANSI_RED + String.format("%.3f", hundPct) + " " + (lastPct < hundPct ? ANSI_GREEN : lastPct == hundPct ? ANSI_YELLOW : "") + String.format("%.3f", hundPct - lastPct) + ANSI_RESET + " " + (String.format("%.3f", record)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
+                System.out.println(ANSI_RED + String.format("%.3f", hundPct) + " " + (lastPct < hundPct ? ANSI_GREEN : lastPct == hundPct ? ANSI_YELLOW : "") + String.format("%.3f", hundPct - lastPct) + ANSI_RESET + "   " + (String.format("%.3f", record)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
+                System.out.println("W+D%|chng W+D%|rec   t");
                 if (lundPct > lrecord){
-					System.out.println(ANSI_GREEN + String.format("%.3f", lundPct) + " " + String.format("%.3f", lundPct - lastLund) + ANSI_RESET + " " + (String.format("%.3f", lrecord)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
+					System.out.println(ANSI_GREEN + String.format("%.3f", lundPct) + " " + String.format("%.3f", lundPct - lastLund) + ANSI_RESET + "   " + (String.format("%.3f", lrecord)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
 					lrecord = lundPct;
                 }
                 else 
-                System.out.println(ANSI_RED + String.format("%.3f", lundPct) + " " + (lastLund < lundPct ? ANSI_GREEN : lastLund == lundPct ? ANSI_YELLOW : "") + String.format("%.3f", lundPct - lastLund) + ANSI_RESET + " " + (String.format("%.3f", lrecord)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
+                System.out.println(ANSI_RED + String.format("%.3f", lundPct) + " " + (lastLund < lundPct ? ANSI_GREEN : lastLund == lundPct ? ANSI_YELLOW : "") + String.format("%.3f", lundPct - lastLund) + ANSI_RESET + "     " + (String.format("%.3f", lrecord)) + " " + (System.currentTimeMillis() - lastTime) + "ms");
 				lastLund = lundPct;
 				lastPct = hundPct;
                 //splits.write(hundPct + " " + (randomWins + smartWins + draws) + " " + (System.currentTimeMillis() - lastTime) + "ms");
